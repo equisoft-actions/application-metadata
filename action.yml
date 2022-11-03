@@ -32,7 +32,7 @@ inputs:
     required: false
 
   hotfix-branch-prefix:
-    description:
+    description: |
       Branch prefix allowed for hotfix. Tags on this branch will set is_hotfix to true.
 
       Make sure the branch is available with git fetch (if fetch-depth is unset or > 0)
