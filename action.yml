@@ -107,9 +107,13 @@ runs:
           if [[ "$PUBLISHABLE" == "false" && ! -z "$HOTFIX_BRANCH_PREFIX" ]]; then
             # Maybe we have an hotfix. Must be ancestor to the corresponding stable hotfix branch
             HOTFIX_BRANCH="${HOTFIX_BRANCH_PREFIX%/}/v${VERSION%.*}.x"
-            PUBLISHABLE=$(git merge-base --is-ancestor "$GITHUB_SHA" "origin/$HOTFIX_BRANCH" && echo "true" || echo "false")
-            if [[ "PUBLISHABLE" == "true" ]]; then
-              IS_HOTFIX="true"
+            if [[ ! -z "$(git ls-remote --heads origin ${HOTFIX_BRANCH})" ]]; then
+              PUBLISHABLE=$(git merge-base --is-ancestor "$GITHUB_SHA" "origin/$HOTFIX_BRANCH" && echo "true" || echo "false")
+              if [[ "PUBLISHABLE" == "true" ]]; then
+                IS_HOTFIX="true"
+              fi
+            else
+              echo "Hotfix branch '${HOTFIX_BRANCH}' does not exists. Could not publish tag '${VERSION}'"
             fi
           fi
 
@@ -132,3 +136,11 @@ runs:
         echo "publishable=$PUBLISHABLE" >> $GITHUB_OUTPUT
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "is-hotfix=$IS_HOTFIX" >> $GITHUB_OUTPUT
+
+        echo "### Aplication metadata" >> $GITHUB_STEP_SUMMARY
+        echo "|Output|Value|" >> $GITHUB_STEP_SUMMARY
+        echo "|:---|:---|" >> $GITHUB_STEP_SUMMARY
+        echo "|__is-release__|$IS_RELEASE|" >> $GITHUB_STEP_SUMMARY
+        echo "|__publishable__|$PUBLISHABLE|" >> $GITHUB_STEP_SUMMARY
+        echo "|__version__|$VERSION|" >> $GITHUB_STEP_SUMMARY
+        echo "|__is-hotfix__|$IS_HOTFIX|" >> $GITHUB_STEP_SUMMARY
