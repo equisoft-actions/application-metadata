@@ -68,6 +68,7 @@ runs:
     - name: Find latest released version
       id: latest
       uses: oprypin/find-latest-tag@v1.1.1
+      continue-on-error: true
       with:
         repository: ${{ github.repository }}
         releases-only: false
