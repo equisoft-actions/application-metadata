@@ -114,7 +114,8 @@ runs:
           RELEASE_BRANCH="$DEFAULT_BRANCH"
         fi
 
-        if [[ $REF =~ v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        # Note: Sometimes we use 14-character date as a revision number
+        if [[ $REF =~ v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,14}$ ]]; then
           VERSION="${REF#v}"
           PUBLISHABLE="$(git merge-base --is-ancestor "$SHA" "origin/$RELEASE_BRANCH" && echo "true" || echo "false")"
 
