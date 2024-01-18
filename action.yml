@@ -51,7 +51,8 @@ outputs:
       'false' if this build should not publish its artifacts.
     value: ${{ steps.metadata.outputs.publishable }}
   is-hotfix:
-    description: 'true' if this build is a hotfix
+    description: |
+      'true' if this build is a hotfix
     value: ${{ steps.metadata.outputs.is-hotfix }}
   is-release:
     description: |
