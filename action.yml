@@ -120,7 +120,7 @@ runs:
 
         # Note: Sometimes we use 14-character date as a revision number
         # and optionally a 4th segment (v3.6.15.1) or a semver prerelease (v3.7.13-1)
-       if [[ $REF =~ v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,14}(\.[0-9]{1,14}|-[0-9]+)?$ ]]; then
+        if [[ $REF =~ v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,14}(\.[0-9]{1,14}|-[0-9]+)?$ ]]; then
           VERSION="${REF#v}"
           PUBLISHABLE="$(git merge-base --is-ancestor "$SHA" "origin/$RELEASE_BRANCH" && echo "true" || echo "false")"
 
